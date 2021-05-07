@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load cartag %}
+
+{% block body %}
+    {% if object_list %}
+        <!-- <h2>{{object_list.count}} Car{{object_list.count|pluralize}} posted.</h2> -->
+        <h3 class="welcome">You're welcome to Koded Automobiles</h3>
+        {% for o in object_list %}
+            <div class="car">
+                <div class="row">
+                    <!-- <a href="{% url 'cardetail' slug=o.slugy%}"> -->
+                    <div class="col-md-4 pic">
+                        <a href="{% url 'cardetail' slug=o.slugy%}">
+                            <img src="{{MEDIA_URL}}/{{o.mainpic}}" alt="" srcset="" class="carpic">
+                        </a>
+                    </div>
+                    <div class="col-md-8">
+                        <h4>
+                            <a href="{% url 'cardetail' slug=o.slugy%}">{{o.title}}</a> {% if o.uploaded|timer < 24 %} <span class="badge badge-pill badge-warning">NEW</span> {% endif %}
+                        </h4>
+                        <!-- <h5>Posted by: {{o.by}}</h5> -->
+                        <span class="price">&#8358;{{o.price|intcomma}}</span>
+                        <br>
+                        <span>{{o.mileage|intcomma}} miles</span>
+                        <div class="row">
+                            <div class="col-6"><span class="option">Maker:</span> {{o.maker|title}}</div>
+                            <div class="col-4"><span class="option">Model: </span>{{o.model}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><span class="option">Year: </span>{{o.year}}</div>
+                            <div class="col-6"><span class="option">Transmission: </span>{{o.transmission}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><span class="option">Fuel: </span>{{o.fuel}}</div>
+                            <div class="col-4"><span class="option">Colour: </span>{{o.colour|title}}</div>
+                        </div>
+                        <br>
+                        <!-- <div class="row justify-content-end">
+                            <div class="col-md-6">
+                                {% if o.uploaded|timer < 4 %}
+                                    <span>Posted {{o.uploaded|naturaltime}}</span>
+                                {% else %}
+                                    Posted {{o.uploaded|naturalday}}</span>
+                                {% endif %}
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="row justify-content-center">
+            <div class="pagination welcome col-10">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    {% else %}
+        <h2 align="center">No Cars have been added</h2>
+        {% if user.is_authenticated and user.is_superuser %}
+            <a href="#"><h3 align="center">Post a car</h3></a>
+        {% endif %}
+    {% endif %}
+{% endblock %}

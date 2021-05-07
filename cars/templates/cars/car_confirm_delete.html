@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-10 col-md-8 col-lg-6 login" align="center">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="pic">
+                    <img src="{{MEDIA_URL}}/{{object.mainpic}}" alt="" srcset="" class="carpic">
+                </div>
+                <h6 align="center" class="welcome">Are you sure you want to delete {{object.title}}?</h6>
+                <a href="{% url 'cardetail' slug=object.slugy%}" class="btn btn-primary btn-lg">NO</a>
+                <input type="submit" value="Yes, DELETE" class="btn btn-danger btn-lg" id="bt">
+            </form>
+        </div>
+    </div>
+{% endblock body %}
+    
